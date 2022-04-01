@@ -1,0 +1,17 @@
+handler: demo_lambda.main
+module: demo-repository/demo-lambda/src
+name: demo-lambda-${self:provider.stage}
+description: The lambda responsible for adding events to the demo cache.
+role: "test_role"
+timeout: 900
+memorySize: 512
+package:
+  include:
+    - "!./**"
+    - ./demo/demo-lambda/src/**
+  exclude:
+    - '**'
+runtime: python3.8
+environment:
+  LOG_LEVEL: ${env:LOG_LEVEL}
+  ENDPOINT_URL: "URL"

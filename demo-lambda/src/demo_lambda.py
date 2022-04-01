@@ -1,27 +1,40 @@
-# import io
-# import json
-# import logging
-# import random
-# import time
-# import zipfile
-import boto3
-# from botocore.exceptions import ClientError
+import json
+# import boto3
 
 def main(event, context):
-    try:
-        response = lambda_client.create_function(
-            FunctionName=function_name,
-            Description="AWS Lambda demo",
-            Runtime='python3.8',
-            Role=iam_role.arn,
-            Handler=handler_name,
-            Code={'ZipFile': deployment_package},
-            Publish=True)
-        function_arn = response['FunctionArn']
-        logger.info("Created function '%s' with ARN: '%s'.",
-                    function_name, response['FunctionArn'])
-    except ClientError:
-        logger.exception("Couldn't create function %s.", function_name)
-        raise
-    else:
-        return function_arn
+    # sqs = boto3.client("sqs")
+    # dynamodb = boto3.resource('dynamodb')
+    message = {
+        "event_id" : "abc",
+        "event_name" : "newEvent",
+        "event_date" : "date"
+    }
+
+    print(json.dumps(message))
+
+    response = {
+        "status_code" : 200,
+        "message" : json.dumps(message)
+    }
+
+    return response
+
+
+# import boto3
+# from uuid import uuid4
+# def main(event, context):
+#     try:
+#         sqs = boto3.client("sqs")
+#         dynamodb = boto3.resource('dynamodb')
+#         for record in event['Records']:
+#             message_name = record['sqs']['message']['name']
+#             object_key = record['sqs']['object']['key']
+#             size = record['sqs']['object'].get('size', -1)
+#             event_id = record['eventID']
+#             event_name = record['eventName']
+#             event_date = record['eventDate']
+#             dynamo_table = dynamodb.Table('demoTable')
+#             dynamo_table.put_item(Item={'Unique': str(uuid4()), 'Name': message_name, 'Object': object_key, 'Size': size, 'ID': event_id, 'Event': event_name, 'Date': event_date})
+#
+#     except:
+#         pass
